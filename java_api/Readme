@@ -1,0 +1,36 @@
+This is a Java implementation of the AppFirst Collector API.
+
+The collector API allows you to inject strings directly into the 
+collector data stream. The strings are handled by the web application 
+as incident reports. The number of incident reports can be included in 
+various graphs and visualizations. The strings themselves are 
+visible as detailed data by clicking on any point in a graph in the
+web application. All incident reports are collected into a given minute 
+in the time series visualizations.
+
+The collector API uses POSIX message queues (% man 7 mq_overview) as
+a message passing IPC to pass a message from your Java app to
+the AppFirst collector. message queues are used as a common IPC
+so that various client bindings can be supported, in addition to Java. 
+
+Because POSIX message queues are used, the Java client code needs to
+access native OS functions. We use JNA (http://jna.java.net/) for this.
+The jna.jar file is used along with AfCollector.class.≈ß
+
+There are 2 ways to use this API in your Java code.
+1) include jna.jar and AfCollector.class
+2) include AfCollector.jar
+
+Build:
+% ant
+builds the classes and jars as needed
+
+% ant -buildfile ./build_jar.xml
+creates the AfCollector.jar combining classes from jna.jar & AfCollector.class
+
+Run a test:
+% java -jar bin/AfCollector.jar 200
+creates 200 critical incident reports with a test message
+
+The main method in the file src/AfCollector.java provides an example for
+using the API. 
