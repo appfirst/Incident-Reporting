@@ -21,6 +21,7 @@ if ctypes:
             self.msgLen = 2048
             self.mqueue = None
             self.shlib = None
+            self.pid_override = None
             self.doExcept = False
             self.verbosity = False
             self.typemap = {
@@ -30,7 +31,7 @@ if ctypes:
                 logging.ERROR: 2,
                 logging.CRITICAL: 2
             }
-        
+       
         def handleError(self, record, emsg = " "):
             if self.mqueue:
                 self.close()
@@ -72,7 +73,11 @@ if ctypes:
             # Decode message (which might be a byte-string into unicode object)
             if not isinstance(mymsg, unicode):
                 mymsg = msg.decode("utf-8")
-            post = unicode(os.getpid()) + u":" + mymsg
+            if self.pid_override is None:
+                pid = os.getpid()
+            else:
+                pid = self.pid_override
+            post = unicode(pid) + u":" + mymsg
             # convert unicode back to byte stream since we are writing to a low level stream.
             post = post.encode("utf-8")
             if self.verbosity:
