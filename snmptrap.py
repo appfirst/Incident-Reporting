@@ -39,5 +39,5 @@ capi.setFormatter(formatter)
 logger = logging.getLogger("SNMP-TRAP")
 logger.setLevel(logging.DEBUG)
 logger.addHandler(capi)
-msg = lines[0]+lines[len(lines)-1]  # in this example, we use the first and last lines.  
+msg = lines[0]+lines[3]  # in this example, we use the first and third lines.  
 logger.critical(msg)
